@@ -5,27 +5,29 @@ import { ActivatedRoute, Router } from '@angular/router';
   
 @Component({
   selector: 'employee-details',
+  standalone: false,
   templateUrl: './employee-details.component.html',
   styleUrls: ['./employee-details.component.css']
 })
 export class EmployeeDetailsComponent implements OnInit {
- 
-  employeeID: number;
-  employee: Employee;
- 
-  constructor(private route: ActivatedRoute,private router: Router,
-    private employeeService: EmployeeService) {}
- 
-  ngOnInit() {
-    this.employee = new Employee();
 
-    this.employeeID = this.route.snapshot.params['employeeID'];
+  employeeID!: number;
+  employee: Employee = new Employee();
+
+  constructor(private route: ActivatedRoute, private router: Router,
+    private employeeService: EmployeeService) {}
+
+  ngOnInit() {
+    this.employeeID = Number(this.route.snapshot.params['employeeID']);
 
     this.employeeService.getEmployee(this.employeeID)
-    .subscribe(data => {
-      console.log(data)
-      this.employee = data;
-    }, error => console.log(error));
+    .subscribe({
+      next: data => {
+        console.log(data);
+        this.employee = data;
+      },
+      error: error => console.log(error)
+    });
   }
  
   list(){

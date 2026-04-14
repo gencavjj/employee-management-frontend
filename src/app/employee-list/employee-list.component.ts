@@ -6,11 +6,12 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-employee-list',
+  standalone: false,
   templateUrl: './employee-list.component.html',
   styleUrls: ['./employee-list.component.css']
 })
 export class EmployeeListComponent implements OnInit {
-  employees: Observable<Employee[]>;
+  employees!: Observable<Employee[]>;
 
   constructor(private employeeService: EmployeeService,
     private router: Router) {}
@@ -25,12 +26,13 @@ export class EmployeeListComponent implements OnInit {
 
     deleteEmployee(employeeID: number) {
       this.employeeService.deleteEmployee(employeeID)
-        .subscribe(
-          data => {
+        .subscribe({
+          next: data => {
             console.log(data);
             this.reloadData();
           },
-          error => console.log(error));
+          error: error => console.log(error)
+        });
     }
   
     employeeDetails(employeeID: number){

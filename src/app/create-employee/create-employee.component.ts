@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-employee',
+  standalone: false,
   templateUrl: './create-employee.component.html',
   styleUrls: ['./create-employee.component.css']
 })
@@ -26,7 +27,10 @@ export class CreateEmployeeComponent implements OnInit {
 
   save() {
     this.employeeService.createEmployee(this.employee)
-      .subscribe((data: Employee) => this.employee = data, error => console.log(error));
+      .subscribe({
+        next: (data) => this.employee = data as Employee,
+        error: (error) => console.log(error)
+      });
     this.gotoList();
   }
 
