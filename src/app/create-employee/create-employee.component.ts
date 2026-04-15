@@ -26,7 +26,16 @@ export class CreateEmployeeComponent implements OnInit {
   }
 
   save() {
-    this.employeeService.createEmployee(this.employee)
+    // The "Note" input binds a single string to employee.notes, but the backend's
+    // EmployeeDTO declares notes as List<String>. Normalize to an array before POST
+    // so Jackson can deserialize it.
+    const rawNotes = this.employee.notes as unknown as string | string[];
+    const payload: Employee = {
+      ...this.employee,
+      notes: Array.isArray(rawNotes) ? rawNotes : (rawNotes ? [rawNotes] : [])
+    };
+
+    this.employeeService.createEmployee(payload)
       .subscribe({
         next: (data) => this.employee = data as Employee,
         error: (error) => console.log(error)
