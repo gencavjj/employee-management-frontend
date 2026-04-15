@@ -14,7 +14,7 @@
           </thead>
           <tbody>
               <tr *ngFor="let employee of employees | async">
-                  <td>{{ employee.firstName + employee.lastName }}</td>
+                  <td>{{ employee.firstName }} {{ employee.lastName }}</td>
                   <td>{{employee.notes}}</td>
                   <td><button (click)="deleteEmployee(employee.employeeID)">Delete</button>
                       <button (click)="employeeDetails(employee.employeeID)" class="btn btn-info" style="margin-left: 10px">Details</button>
