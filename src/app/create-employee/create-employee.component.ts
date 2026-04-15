@@ -37,10 +37,12 @@ export class CreateEmployeeComponent implements OnInit {
 
     this.employeeService.createEmployee(payload)
       .subscribe({
-        next: (data) => this.employee = data as Employee,
+        next: (data) => {
+          this.employee = data as Employee;
+          this.gotoList();
+        },
         error: (error) => console.log(error)
       });
-    this.gotoList();
   }
 
   onSubmit() {
